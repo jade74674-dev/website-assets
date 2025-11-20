@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+        }
+        
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #output {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            min-height: 50px;
+        }
+        
+        .status {
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .success {
+            background: rgba(46, 204, 113, 0.3);
+            border: 1px solid #2ecc71;
+        }
+        
+        .counter {
+            font-size: 2em;
+            text-align: center;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Test Page Working!</h1>
+        
+        <div class="feature-box">
+            <h2>✅ JavaScript Test</h2>
+            <p>Click the button below to test JavaScript functionality:</p>
+            <button onclick="testJavaScript()">Test JavaScript</button>
+            <button onclick="startCounter()">Start Counter</button>
+            <div id="output">JavaScript output will appear here...</div>
+        </div>
+        
+        <div class="feature-box">
+            <h2>🎯 Interactive Elements</h2>
+            <div class="counter" id="counter">0</div>
+            <button onclick="incrementCounter()">Increment +1</button>
+            <button onclick="resetCounter()">Reset Counter</button>
+        </div>
+        
+        <div class="feature-box">
+            <h2>📊 System Check</h2>
+            <div id="systemStatus">
+                <div class="status">Checking your system...</div>
+            </div>
+        </div>
+        
+        <div class="feature-box">
+            <h2>🌈 Color Generator</h2>
+            <button onclick="changeBackground()">Change Background Color</button>
+            <button onclick="addRandomBox()">Add Random Box</button>
+            <div id="colorBoxes" style="margin-top: 15px;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables - testing if they work
+        window.descriptionText = "This is a global variable test - if you can see this, scripts are working!";
+        let counterValue = 0;
+        
+        // Test JavaScript functionality
+        function testJavaScript() {
+            const output = document.getElementById('output');
+            output.innerHTML = `
+                <div class="status success">✅ JavaScript is working!</div>
+                <p><strong>Global variable test:</strong> ${descriptionText}</p>
+                <p><strong>Current time:</strong> ${new Date().toLocaleString()}</p>
+                <p><strong>User agent:</strong> ${navigator.userAgent}</p>
+            `;
+        }
+        
+        // Counter functions
+        function startCounter() {
+            counterValue = 0;
+            updateCounter();
+            const interval = setInterval(() => {
+                counterValue++;
+                updateCounter();
+                if (counterValue >= 10) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+        
+        function incrementCounter() {
+            counterValue++;
+            updateCounter();
+        }
+        
+        function resetCounter() {
+            counterValue = 0;
+            updateCounter();
+        }
+        
+        function updateCounter() {
+            document.getElementById('counter').textContent = counterValue;
+        }
+        
+        // System check
+        function checkSystem() {
+            const statusDiv = document.getElementById('systemStatus');
+            const tests = [
+                { name: 'JavaScript', test: () => true },
+                { name: 'Local Storage', test: () => typeof(Storage) !== "undefined" },
+                { name: 'CSS Grid', test: () => CSS.supports('display', 'grid') },
+                { name: 'Flexbox', test: () => CSS.supports('display', 'flex') },
+                { name: 'ES6 Support', test: () => {
+                    try { eval('class Test {}'); return true; } catch(e) { return false; }
+                }}
+            ];
+            
+            let results = '';
+            tests.forEach(test => {
+                const passed = test.test();
+                results += `
+                    <div class="status ${passed ? 'success' : ''}">
+                        ${passed ? '✅' : '❌'} ${test.name}
+                    </div>
+                `;
+            });
+            
+            statusDiv.innerHTML = results;
+        }
+        
+        // Color functions
+        function changeBackground() {
+            const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.body.style.background = `linear-gradient(135deg, ${randomColor} 0%, ${colors[Math.floor(Math.random() * colors.length)]} 100%)`;
+        }
+        
+        function addRandomBox() {
+            const boxes = document.getElementById('colorBoxes');
+            const colors = ['#ff6b6b', '#48dbfb', '#1dd1a1', '#f368e0', '#ff9f43', '#54a0ff'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            const box = document.createElement('div');
+            box.style.cssText = `
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                background: ${randomColor};
+                margin: 5px;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: transform 0.2s;
+            `;
+            box.onclick = function() {
+                this.style.transform = 'scale(1.2)';
+                setTimeout(() => this.remove(), 300);
+            };
+            box.onmouseover = function() {
+                this.style.transform = 'scale(1.1)';
+            };
+            box.onmouseout = function() {
+                this.style.transform = 'scale(1)';
+            };
+            
+            boxes.appendChild(box);
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Test page loaded successfully!');
+            console.log('Global variable descriptionText:', descriptionText);
+            checkSystem();
+            
+            // Add some initial content to output
+            document.getElementById('output').innerHTML = 
+                '<div class="status success">✅ Page loaded successfully! Click buttons to test functionality.</div>';
+        });
+        
+        // Test error handling
+        function testError() {
+            try {
+                // This will throw an error intentionally
+                undefinedFunction();
+            } catch (error) {
+                document.getElementById('output').innerHTML = 
+                    `<div class="status">❌ Error caught: ${error.message}</div>`;
+            }
+        }
+    </script>
+</body>
+</html>
